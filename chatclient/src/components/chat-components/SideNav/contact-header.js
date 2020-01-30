@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Divider } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 export default function ContactHeader() {
     return (

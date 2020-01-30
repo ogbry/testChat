@@ -10,10 +10,9 @@ const useStyles = makeStyles(theme => ({}));
 export default function Chat() {
     const classes = useStyles()
 
-
     return (
         <div>
-            <Grid container style={{border: 'solid 2px #999', padding: 5, }}>
+            <Grid container style={{border: 'solid 2px #999', padding: 5, background: '#1580F4'}}>
                 <Grid xl={12} lg={12} md={12} sm={12} xs={12}
                 item>
                 <HeaderComponent />

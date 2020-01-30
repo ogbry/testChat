@@ -10,29 +10,36 @@ const styles = {
         borderRadius: '20px 20px 0px 20px',
         fontSize: '19px',
         padding: 10,
+        backgroundColor: '#F1F1F1',
         wordBreak: 'break-word',
-        ['@media (max-width:950px)']: {
+        '@media (max-width:950px)': {
             fontSize: '15px'
         },
     },
     senderText: {
         textAlign: 'left',
-        border: 'solid 2px #999',
         borderRadius: '20px 20px 20px 0px',
         fontSize: '19px',
         padding: 10,
+        backgroundColor: '#1580F4',
+        color: 'white',
         wordBreak: 'break-word',
-        ['@media (max-width:950px)']: {
+        '@media (max-width:950px)': {
             fontSize: '15px'
         },
     },
     buttonLabel: {
-        ['@media (max-width: 687px)']: {
+        '@media (max-width: 687px)': {
             display: 'none'
         },
     },
     button: {
-        ['@media (max-width:462px)']: {
+        background: '#1580F4',
+        "&:hover": {
+            background: "#1580F4",
+            cursor: 'pointer',
+          },
+        '@media (max-width:462px)': {
             width: '20px',
             padding: 0
         },
@@ -40,15 +47,15 @@ const styles = {
     textArea: {
         resize: 'none', 
         width: '97%', 
-        fontSize: '25px', 
+        fontSize: '17px', 
         borderRadius: '20px', 
         outline: 'none', 
         padding: 10,
-        ['@media (max-width:950px)']: {
-            fontSize: '20px'
-        },
-        ['@media (max-width:400px)']: {
+        '@media (max-width:950px)': {
             fontSize: '15px'
+        },
+        '@media (max-width:400px)': {
+            fontSize: '12px'
         },
     }
 }
@@ -77,16 +84,16 @@ class Chatbox extends Component {
     
     scrollToBottom = () => {
         this.messagesEnd.scrollIntoView({ behavior: "smooth" });
-      }
+    }
       
-      componentDidMount() {
+    componentDidMount() {
         this.scrollToBottom();
-      }
+    }
       
-      componentDidUpdate() {
+    componentDidUpdate() {
         this.scrollToBottom();
-        
-      }
+    }
+
     render() {
         const {classes} = this.props
         
@@ -102,7 +109,7 @@ class Chatbox extends Component {
                                 mock.map((element, index) => {
                                     return <div key={index} ref={(el) => { this.messagesEnd = el; }}>
                                         {
-                                            element.userId != 2 ? 
+                                            element.userId !== 2 ? 
                                             <Grid style={{display: 'flex', alignItems: 'center'}}
                                             xl={12} lg={12}
                                             item>
@@ -157,7 +164,7 @@ class Chatbox extends Component {
                                 <Grid item style={{height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center', }}
                                 lg={11} md={10} sm={9} xs={9}
                                 >
-                                    <textarea rows="2" autoFocus className={classes.textArea}>
+                                    <textarea rows="2" autoFocus className={classes.textArea} placeholder="Type your message...">
                                         
                                     </textarea>
                                 </Grid>
