@@ -5,9 +5,11 @@ import HeaderComponent from './header'
 import SideNav from './SideNav/Contacts'
 import ChatBox from './Chatbox/Chatbox'
 
+
 const useStyles = makeStyles(theme => ({}));
 
 export default function Chat() {
+    console.log(process.env)
     const classes = useStyles()
 
     return (
