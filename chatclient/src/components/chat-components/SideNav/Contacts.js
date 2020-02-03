@@ -11,7 +11,6 @@ const styles = {
 
 class Contacts extends Component {
     render() {
-        const { classes } = this.props
         return (
             <Grid container direction="column" >
                 <Grid style={{padding: 15}}

@@ -45,8 +45,7 @@ const styles = {
         },
     },
     textArea: {
-        resize: 'none', 
-        width: '97%', 
+        resize: 'none',  
         fontSize: '17px', 
         borderRadius: '20px', 
         outline: 'none', 
@@ -78,7 +77,7 @@ class Chatbox extends Component {
     constructor(){
         super();
         this.state = {
-
+            buttonDisabled: true
         }
     }
     
@@ -94,9 +93,12 @@ class Chatbox extends Component {
         this.scrollToBottom();
     }
 
+    buttonHandler = (e) => {
+        e.target.value ? this.setState({ buttonDisabled: false}) : this.setState({ buttonDisabled: true})
+    }
+
     render() {
         const {classes} = this.props
-        
         return (
             <div style={{height: '780px', width: '100%'}}> 
                 <Grid container style={{border: 'solid 1px', borderRadius: '15px', width: '98%', margin: '0 auto'}}
@@ -143,7 +145,7 @@ class Chatbox extends Component {
                                                 xl={5} lg={5} md={6} sm={7} xs={8}
                                                 item>
                                                     <span className={classes.senderText}>
-                                                        {element.message} 
+                                                        {element.message}
                                                     </span>
                                                     
                                                 </Grid>
@@ -161,18 +163,22 @@ class Chatbox extends Component {
                         xl={12} lg={12} md={12} sm={12} xs={12}
                         >
                             <Grid container>
-                                <Grid item style={{height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center', }}
-                                lg={11} md={10} sm={9} xs={9}
+                                <Grid item style={{height: '100px', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}
+                                lg={11} md={10} sm={8} xs={9}
                                 >
-                                    <textarea rows="2" autoFocus className={classes.textArea} placeholder="Type your message...">
+                                    <span style={{fontSize: '11px', color: "#999", marginLeft: 10}}>Characters remaining: 250</span>
+                                    <textarea onChange={this.buttonHandler}
+                                     rows="2" autoFocus className={classes.textArea} placeholder="Type your message...">
                                         
                                     </textarea>
                                 </Grid>
 
-                                <Grid item style={{height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 3}}
-                                lg={1} md={2} sm={3} xs={3}
+                                <Grid item style={{height: '100px', display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center', padding: 3}}
+                                lg={1} md={2} sm={4} xs={3}
                                 >
                                     <Button style={{height: '50px'}}
+                                    fullWidth
+                                        disabled={this.state.buttonDisabled}
                                         size="large"
                                         variant="contained"
                                         color="primary"
@@ -181,7 +187,9 @@ class Chatbox extends Component {
                                     >
                                         <label className={classes.buttonLabel}>SEND</label>
                                     </Button>
+                                    
                                 </Grid>
+                                
                             </Grid>
                             
                         </Grid>

@@ -3,11 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-
-const path = require("path")
-const x = path.resolve(process.cwd(), '.env')
-
-require('dotenv').config({path: x})
+require('dotenv').config()
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

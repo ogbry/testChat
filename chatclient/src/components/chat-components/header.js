@@ -41,23 +41,6 @@ export default function Header() {
                     <Typography className={classes.textLogo}>ChatApp</Typography>
                 </Grid>
 
-                {/* Search Box */}
-                {/* <Grid item xl={2} lg={2} md={3} sm={4} xs={5}
-                
-                >
-                <TextField
-                    label="Search"
-                    fullWidth
-                    InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                        <AccountCircle />
-                        </InputAdornment>
-                    ),
-                    }}
-                />
-                </Grid> */}
-
                 {/* Profile */}
                 <Grid item xl={10} lg={10} md={9} sm={9} xs={6}
                 style={{display: 'flex'}}
