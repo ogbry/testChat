@@ -1,0 +1,37 @@
+.fields{
+    padding: 13px;
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: #333;
+    background-color: #F4F3F9;
+    border-radius: 30px;
+    border: none;
+    margin: 15px;
+    outline: none;
+}
+button{
+    font-size: 20px;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 30px;
+    border: none;
+    margin-top: 20px;
+    outline: none;
+    color: #FFF;
+    background-color: #1580F4;
+    letter-spacing: 3px;
+}
+.column-flex{
+    display: flex;
+    flex-direction: column
+}
+.paper{
+    padding: 20px;
+    width: 450px;
+}
+.flex-center{
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+}

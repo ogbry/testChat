@@ -7,7 +7,17 @@ const server = http.createServer(app)
 
 const io = socketio(server)
 
+io.on('connection', (socket) => {
+    console.log('Connected');
 
+    socket.on('join', ({name, password}) => {
+        console.log(name, password)
+    })
+
+    socket.on('disconnect', () => {
+        console.log("Disconnected")
+    })
+})
 
 const PORT = process.env.SERVER_PORT
 
