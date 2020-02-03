@@ -77,7 +77,8 @@ class Chatbox extends Component {
     constructor(){
         super();
         this.state = {
-            buttonDisabled: true
+            buttonDisabled: true,
+            char: 50
         }
     }
     
@@ -94,6 +95,8 @@ class Chatbox extends Component {
     }
 
     buttonHandler = (e) => {
+        let newCount = e.target.maxLength - e.target.value.length
+        this.setState({char: newCount})
         e.target.value ? this.setState({ buttonDisabled: false}) : this.setState({ buttonDisabled: true})
     }
 
@@ -166,8 +169,8 @@ class Chatbox extends Component {
                                 <Grid item style={{height: '100px', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}
                                 lg={11} md={10} sm={8} xs={9}
                                 >
-                                    <span style={{fontSize: '11px', color: "#999", marginLeft: 10}}>Characters remaining: 250</span>
-                                    <textarea onChange={this.buttonHandler}
+                                    <span style={{fontSize: '11px', color: "#999", marginLeft: 10}}>Characters remaining: {this.state.char}</span>
+                                    <textarea onChange={this.buttonHandler} maxLength="50"
                                      rows="2" autoFocus className={classes.textArea} placeholder="Type your message...">
                                         
                                     </textarea>
