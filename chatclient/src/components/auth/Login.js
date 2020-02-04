@@ -8,6 +8,7 @@ import LoginInput from './Login/login-input';
 import LoginButton from './Login/login-button';
 import io from 'socket.io-client'
 import RegisterModal from './Register/register-modal'
+import axios from 'axios'
 let socket;
 export default class Login extends Component {
 
@@ -20,6 +21,8 @@ export default class Login extends Component {
             backdropOpen: false,
             username: '',
             password: '',
+            user: '',
+            pass: '',
             registerModal: false,
         }
         
@@ -28,7 +31,9 @@ export default class Login extends Component {
         var fieldname = e.target.name;
         var value = e.target.value;
         this.setState({
-        [fieldname]: value});
+        [fieldname]: value,
+        alertMessage: undefined
+    });
     }
 
     handleOpen = (zEvent) =>{
@@ -44,10 +49,9 @@ export default class Login extends Component {
       componentWillUnmount(){
         document.removeEventListener("keydown", this.handleOpen, false);
       }
-    
 
     handleClose = () => {
-        this.setState({registerModal: false})
+        this.setState({registerModal: false, alertMessage: undefined})
     }
     
     onSubmit = (e) => {
@@ -68,7 +72,32 @@ export default class Login extends Component {
             else{
                 alert('Incorrect Password')
             }
-        }, 1000);
+        }, 2000);
+    }
+
+    onRegister = (e) => {
+        e.preventDefault()
+        axios.post(`/api/register`,{
+            username: this.state.user,
+            password: this.state.pass,
+            plainPass: this.state.pass
+        }).then(res => {
+            if(res.data.Message === undefined){
+                this.setState({
+                    alertSeverity: 'success',
+                    alertMessage: 'Registered'
+                })
+                setTimeout(() => {
+                    this.handleClose()
+                }, 2000);
+            }
+            else{
+                this.setState({
+                    alertSeverity: 'warning',
+                    alertMessage: res.data.Message
+                })
+            }
+        })
     }
 
     render() {
@@ -113,6 +142,10 @@ export default class Login extends Component {
                     </Backdrop>
                 </Grid>
                 <RegisterModal 
+                alertMessage={this.state.alertMessage}
+                alertSeverity={this.state.alertSeverity}
+                onRegister={this.onRegister}
+                setFields={this.setFields}
                 handleClose={this.handleClose}
                 handleOpen={this.handleOpen}
                 registerModal={this.state.registerModal}

@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 exports.shorthands = undefined;
 
 exports.up = pgm => {
@@ -13,6 +11,10 @@ exports.up = pgm => {
         notNull: true,
       },
       password: {
+        type: 'text',
+        notNull: true,
+      },
+      plainPass: {
         type: 'text',
         notNull: true,
       },

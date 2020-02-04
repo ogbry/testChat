@@ -4,6 +4,8 @@ const socketio = require('socket.io')
 const http = require('http')
 require('dotenv').config()
 
+const user = require('./controllers/users.js')
+
 massive({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
@@ -30,6 +32,8 @@ massive({
             console.log("Disconnected")
         })
     })
+
+    app.post('/api/register', user.register);
 
     const PORT = process.env.SERVER_PORT
 
