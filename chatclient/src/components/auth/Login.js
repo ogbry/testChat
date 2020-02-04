@@ -7,7 +7,7 @@ import LoginTitle from './Login/login-title' ;
 import LoginInput from './Login/login-input';
 import LoginButton from './Login/login-button';
 import io from 'socket.io-client'
-
+import RegisterModal from './Register/register-modal'
 let socket;
 export default class Login extends Component {
 
@@ -19,14 +19,35 @@ export default class Login extends Component {
             buttonDisabled: false,
             backdropOpen: false,
             username: '',
-            password: ''
+            password: '',
+            registerModal: false,
         }
+        
     }
     setFields = (e) => {
         var fieldname = e.target.name;
         var value = e.target.value;
         this.setState({
         [fieldname]: value});
+    }
+
+    handleOpen = (zEvent) =>{
+        if (zEvent.ctrlKey  &&  zEvent.altKey  &&  zEvent.keyCode === 192) {  
+            this.setState({
+                registerModal: true,
+            })
+        }    
+    }
+    componentDidMount(){
+        document.addEventListener("keydown", this.handleOpen, false);
+      }
+      componentWillUnmount(){
+        document.removeEventListener("keydown", this.handleOpen, false);
+      }
+    
+
+    handleClose = () => {
+        this.setState({registerModal: false})
     }
     
     onSubmit = (e) => {
@@ -47,7 +68,7 @@ export default class Login extends Component {
             else{
                 alert('Incorrect Password')
             }
-        }, 3000);
+        }, 1000);
     }
 
     render() {
@@ -91,6 +112,11 @@ export default class Login extends Component {
                         <CircularProgress />
                     </Backdrop>
                 </Grid>
+                <RegisterModal 
+                handleClose={this.handleClose}
+                handleOpen={this.handleOpen}
+                registerModal={this.state.registerModal}
+                />
             </React.Fragment>
         )
     }
