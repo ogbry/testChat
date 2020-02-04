@@ -24,8 +24,8 @@ massive({
     io.on('connection', (socket) => {
         console.log('Connected');
 
-        socket.on('join', ({name, password}) => {
-            console.log(name, password)
+        socket.on('join', ({id, user}) => {
+            console.log(id, user)
         })
 
         socket.on('disconnect', () => {
@@ -34,6 +34,7 @@ massive({
     })
 
     app.post('/api/register', user.register);
+    app.post('/api/login', user.login);
 
     const PORT = process.env.SERVER_PORT
 

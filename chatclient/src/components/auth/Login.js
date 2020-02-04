@@ -54,7 +54,7 @@ export default class Login extends Component {
         this.setState({registerModal: false, alertMessage: undefined})
     }
     
-    onSubmit = (e) => {
+    onLogin = (e) => {
         e.preventDefault()
         this.setState({
             buttonLabel: 'Logging In', buttonDisabled: true, backdropOpen: true
@@ -63,15 +63,20 @@ export default class Login extends Component {
             this.setState({
                 buttonLabel: 'Login', buttonDisabled: false, backdropOpen: false
             })
-            if(this.state.password === 'brypogi'){
+
+            axios.post(`/api/login`, {
+                username: this.state.username,
+                password: this.state.password
+            }).then(res => {
                 socket = io('localhost:5001')
                 
-                socket.emit('join', ({name: this.state.username, password: this.state.password}))
+                socket.emit('join', ({id: res.data.id, user: res.data.username}))
+                localStorage.setItem('username', res.data.username)
+                localStorage.setItem('tokenAccess', res.data.token)
                 this.props.history.push('/chat')
-            }
-            else{
-                alert('Incorrect Password')
-            }
+            })
+
+            
         }, 2000);
     }
 
@@ -101,6 +106,7 @@ export default class Login extends Component {
     }
 
     render() {
+        console.log(this.props)
         return (
             <React.Fragment>
                 <Grid container justify="center" style={{marginTop: 60}}>
@@ -113,7 +119,7 @@ export default class Login extends Component {
                             <QuestionAnswerIcon style={{fontSize: '50px', color: '#1580F4'}} />
                         </Grid>
 
-                        <form onSubmit={(e) => this.onSubmit(e)}>
+                        <form onSubmit={(e) => this.onLogin(e)}>
                         <Grid item className="column-flex">
                             <LoginInput 
                             onChange={(e) => this.setFields(e)} 

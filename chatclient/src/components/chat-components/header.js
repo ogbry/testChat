@@ -46,8 +46,8 @@ export default function Header() {
                 style={{display: 'flex'}}
                 >
                     <Grid alignItems="center" justify="flex-end" container>
-                        <Avatar alt="Bryan" src="/static/images/avatar/2.jpg" style={{marginRight: 10}} />
-                        <Typography className={classes.text}>User</Typography>
+                        <Typography className={classes.text}>{localStorage.getItem('username') ? localStorage.getItem('username').toUpperCase() : null}</Typography>
+                        <Avatar alt={localStorage.getItem('username') ? localStorage.getItem('username').toUpperCase() : null} src="/static/images/avatar/2.jpg" style={{marginRight: 10}} />
                     </Grid>
                 </Grid>
             </Grid>

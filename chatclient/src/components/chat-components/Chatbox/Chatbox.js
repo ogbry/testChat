@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Grid, Avatar, Button } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles';
 import SendIcon from '@material-ui/icons/Send';
-
+import { Redirect } from 'react-router-dom'
 const styles = {
 	text: {
         textAlign: 'right',
@@ -74,8 +74,8 @@ const mock = [
 
 
 class Chatbox extends Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             buttonDisabled: true,
             char: 50
@@ -87,6 +87,9 @@ class Chatbox extends Component {
     }
       
     componentDidMount() {
+        
+        console.log(this.props.history)
+        console.log(localStorage.getItem('tokenAccess'))
         this.scrollToBottom();
     }
       
@@ -101,6 +104,7 @@ class Chatbox extends Component {
     }
 
     render() {
+        console.log(this.props)
         const {classes} = this.props
         return (
             <div style={{height: '780px', width: '100%'}}> 
