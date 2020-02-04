@@ -4,15 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "db:start": "docker-compose up -d db",
+    "db:stop": "docker-compose down",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "node-pg-migrate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "config": "^3.2.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "massive": "^6.1.4",
+    "node-pg-migrate": "^4.2.2",
+    "pg": "^7.18.1",
     "socket.io": "^2.3.0"
   }
 }
