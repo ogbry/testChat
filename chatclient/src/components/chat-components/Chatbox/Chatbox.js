@@ -30,7 +30,7 @@ export default function Chatbox(props) {
     const [textValue, setTextValue] = useState('')
     const [char, setChar] = useState(50)
     const [chatArray, setChatArray] = useState([])
-    const [playThis, setPlayThis] = useState(false)
+    const [load, setload] = useState(false)
 
     useEffect(() => {
         if(localStorage.getItem('tokenAccess') != null){
@@ -49,13 +49,13 @@ export default function Chatbox(props) {
       }
 
     useEffect(() => {
-        console.log('render')
         getChats()
+        setload(false)
         return () => {
           socket.emit("disconnect");
           socket.off();
         };
-      }, [chatArray]);
+      }, [load]);
 
       const textAreaHandler = (e) => {
           let newCount = e.target.maxLength - e.target.value.length
@@ -69,16 +69,28 @@ export default function Chatbox(props) {
             setTextValue('')
             setChar(50)
             setButtonDisabled(true)
+            
             axios.post(`/api/message/${localStorage.getItem('id')}`, {
                 name: localStorage.getItem('username'),
                 content: textValue
             })
             .then(res => {
                 socket.emit('chat', {userId: parseInt(localStorage.getItem('id')), content: textValue})
+                
             })
-            
+            .then(() => setload(true))
+            axios.get(`/api/getMessages`)
+            .then(res => {
+                if(res.data.length > 20){
+                    axios.delete(`/api/deleteMessages/${res.data[0].id}`)
+                    .then(x => {
+                        console.log("Deleting old messages")
+                    })
+                }
+            })
     }
       const classes = useStyles(); 
+
     return (
         
     <div style={{height: '780px', width: '100%'}}> 

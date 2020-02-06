@@ -47,6 +47,7 @@ massive({
 
     app.post('/api/message/:userid', chats.sendMessage)
     app.get('/api/getMessages', chats.getMessages)
+    app.delete('/api/deleteMessages/:id', chats.deleteOldChats)
 
     const PORT = process.env.SERVER_PORT
 

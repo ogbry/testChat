@@ -21,8 +21,17 @@ function getMessages(req, res){
 }
 
 function deleteOldChats(req, res){
-    console.log('Deleting')
+    const db = req.app.get('db');
+    const { id } = req.params;
+
+
+    db.query(`DELETE from chats where id = ${id}`)
+    .then(data => {
+        console.log('object')
+        res.status(201).json(data)
+    })
 }
+
 
 
 module.exports ={
