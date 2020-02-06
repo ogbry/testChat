@@ -1,6 +1,5 @@
 import React, { useState, useEffect} from 'react'
-import { Grid, Avatar, Button, TextField } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles';
+import { Grid, Button, TextField } from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send';
 import MessagesComponent from './messages.js'
 import { socket } from '../../socket/socket.js'
@@ -31,6 +30,7 @@ export default function Chatbox(props) {
     const [textValue, setTextValue] = useState('')
     const [char, setChar] = useState(50)
     const [chatArray, setChatArray] = useState([])
+    const [playThis, setPlayThis] = useState(false)
 
     useEffect(() => {
         if(localStorage.getItem('tokenAccess') != null){
@@ -49,10 +49,7 @@ export default function Chatbox(props) {
       }
 
     useEffect(() => {
-        // socket.on("chat", data => {
-        //     setChatArray( [{id: undefined, userId: data.userId, content: data.content}] , chatArray);
-        // });
-        
+        console.log('render')
         getChats()
         return () => {
           socket.emit("disconnect");
@@ -73,6 +70,7 @@ export default function Chatbox(props) {
             setChar(50)
             setButtonDisabled(true)
             axios.post(`/api/message/${localStorage.getItem('id')}`, {
+                name: localStorage.getItem('username'),
                 content: textValue
             })
             .then(res => {
@@ -80,7 +78,7 @@ export default function Chatbox(props) {
             })
             
     }
-      const classes = useStyles();  
+      const classes = useStyles(); 
     return (
         
     <div style={{height: '780px', width: '100%'}}> 
@@ -88,8 +86,7 @@ export default function Chatbox(props) {
             >
                 <Grid item xl={12} lg={12} md={12} sm={12} xs={12} style={{height: '680px', overflow: 'auto'}}  
                 >
-                    
-                    
+                    {/* <audio src="https://sndup.net/6rfn/eventually.m4r" autoPlay={playThis}/> */}
                         <MessagesComponent chatArray={chatArray} />
                     
                     

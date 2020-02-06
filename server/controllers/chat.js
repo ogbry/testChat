@@ -1,13 +1,13 @@
 function sendMessage(req, res) {
     const db = req.app.get('db');
     const { userid } = req.params
-    const { content } = req.body
-
+    const { content, name} = req.body
     db.chats
     .insert(
         {
             userId: userid,
-            content: content
+            name: name,
+            content: content,
         }
     )
     .then(data => res.status(201).json(data))

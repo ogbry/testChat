@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Grid, Avatar } from '@material-ui/core'
+import { Grid, Tooltip } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import ScrollableFeed from 'react-scrollable-feed'
-
+import ReactEmoji from 'react-emoji'
+import { Avatar } from 'antd'
 const useStyles = makeStyles(theme => ({
     text: {
         textAlign: 'right',
@@ -45,7 +46,11 @@ const useStyles = makeStyles(theme => ({
 
 export default function Messages(props) {
     const classes = useStyles();
-    
+
+    const trimUser = (word) => {
+        return word.charAt(0).toUpperCase()
+    }
+
     return (
         <React.Fragment>
             <ScrollableFeed>
@@ -57,37 +62,43 @@ export default function Messages(props) {
                                 <Grid style={{display: 'flex', alignItems: 'center'}}
                                 xl={12} lg={12}
                                 item>
+                                    {/* Received */}
                                     <Grid container alignItems="center" justify="flex-end" style={{padding: 5}}>
                                         <Grid style={{margin: 15, display: 'flex', justifyContent: 'flex-end'}}
                                         xl={5} lg={5} md={6} sm={7} xs={8}
                                         item>
                                             <span className={classes.text}>
-                                                {element.content}
+                                                {ReactEmoji.emojify(element.content)}
                                             </span>
                                         </Grid>
 
                                         <Grid style={{ height: '80px', display: 'flex', alignItems: 'flex-end'}}
                                         item>
-                                            <Avatar alt={'Joven'} src="/static/images/avatar/1.jpg" />
+                                        <Tooltip arrow title={element.name.toUpperCase()}>
+                                            <Avatar>{trimUser(element.name)}</Avatar>
+                                        </Tooltip>
                                         </Grid>
 
                                     </Grid>
                                 </Grid>
                                 :
-
+                                // Sent
                                 <Grid container alignItems="center" justify="flex-start" style={{padding: 5}}>
 
                                     <Grid style={{margin: 15, display: 'flex', justifyContent: 'flex-start'}}
 
                                     item>
-                                        <Avatar alt={localStorage.getItem('username')} src="/static/images/avatar/1.jpg" />
+                                        <Tooltip arrow title={localStorage.getItem('username').toUpperCase()}>
+                                            <Avatar>{trimUser(localStorage.getItem('username'))}</Avatar>
+                                        </Tooltip>
+                                    
                                     </Grid>
 
                                     <Grid style={{ display: 'flex', alignItems: 'flex-end'}}
                                     xl={5} lg={5} md={6} sm={7} xs={8}
                                     item>
                                         <span className={classes.senderText}>
-                                            {element.content}
+                                            {ReactEmoji.emojify(element.content)}
                                         </span>
                                                     
                                     </Grid>
