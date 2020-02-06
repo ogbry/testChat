@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "api": "nodemon server/index.js",
     "db:start": "docker-compose up -d db",
     "db:stop": "docker-compose down",
     "test": "echo \"Error: no test specified\" && exit 1",

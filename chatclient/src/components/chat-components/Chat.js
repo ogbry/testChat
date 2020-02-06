@@ -8,8 +8,7 @@ import ChatBox from './Chatbox/Chatbox'
 
 const useStyles = makeStyles(theme => ({}));
 
-export default function Chat() {
-    console.log(process.env)
+export default function Chat(props) {
     const classes = useStyles()
 
     return (
@@ -17,7 +16,7 @@ export default function Chat() {
             <Grid container style={{border: 'solid 2px #999', padding: 5, background: '#1580F4'}}>
                 <Grid xl={12} lg={12} md={12} sm={12} xs={12}
                 item>
-                <HeaderComponent />
+                <HeaderComponent history={props.history} />
                 </Grid>
             </Grid>
             <Grid container style={{border: 'solid 1px', padding: 5}}
@@ -31,7 +30,7 @@ export default function Chat() {
                 <Grid xl={10} lg={9} md={9} sm={7} xs={12}
                 style={{border: 'solid 1px', backgroundColor: 'whitesmoke', padding: 20}}
                 item>
-                    <ChatBox />
+                    <ChatBox history={props.history}/>
                 </Grid>
             </Grid>
         </div>

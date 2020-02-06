@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
-import { Grid, Paper, Backdrop, CircularProgress } from '@material-ui/core'
-import { Link } from 'react-router-dom'
+import { Grid, Paper } from '@material-ui/core'
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import './Login/login.css'
-import LoginTitle from './Login/login-title' ;
-import LoginInput from './Login/login-input';
-import LoginButton from './Login/login-button';
-import io from 'socket.io-client'
+import LoginTitle from '../../components/common-components/login-title' ;
+import LoginInput from '../common-components/login-input';
+import LoginButton from '../common-components/login-button';
 import RegisterModal from './Register/register-modal'
 import axios from 'axios'
-let socket;
+import Loading from '../common-components/loading'
+import {socket} from '../socket/socket.js'
 export default class Login extends Component {
 
     constructor(props) {
@@ -18,25 +17,24 @@ export default class Login extends Component {
         this.state = {
             buttonLabel: 'Login',
             buttonDisabled: false,
-            backdropOpen: false,
             username: '',
             password: '',
+            backdropOpen: false,
             user: '',
             pass: '',
             registerModal: false,
         }
-        
     }
     setFields = (e) => {
         var fieldname = e.target.name;
         var value = e.target.value;
         this.setState({
-        [fieldname]: value,
-        alertMessage: undefined
-    });
+            [fieldname]: value,
+            alertMessage: undefined
+        });
     }
 
-    handleOpen = (zEvent) =>{
+    handleOpen = (zEvent) => {
         if (zEvent.ctrlKey  &&  zEvent.altKey  &&  zEvent.keyCode === 192) {  
             this.setState({
                 registerModal: true,
@@ -44,6 +42,12 @@ export default class Login extends Component {
         }    
     }
     componentDidMount(){
+        if(localStorage.getItem('tokenAccess') != null){
+            this.props.history.push('/chat')
+        }
+        else{
+            this.props.history.push('/')
+        }
         document.addEventListener("keydown", this.handleOpen, false);
       }
       componentWillUnmount(){
@@ -68,15 +72,13 @@ export default class Login extends Component {
                 username: this.state.username,
                 password: this.state.password
             }).then(res => {
-                socket = io('localhost:5001')
                 
                 socket.emit('join', ({id: res.data.id, user: res.data.username}))
                 localStorage.setItem('username', res.data.username)
+                localStorage.setItem('id', res.data.id)
                 localStorage.setItem('tokenAccess', res.data.token)
                 this.props.history.push('/chat')
             })
-
-            
         }, 2000);
     }
 
@@ -106,7 +108,6 @@ export default class Login extends Component {
     }
 
     render() {
-        console.log(this.props)
         return (
             <React.Fragment>
                 <Grid container justify="center" style={{marginTop: 60}}>
@@ -143,9 +144,7 @@ export default class Login extends Component {
                         
                     </Paper>
 
-                    <Backdrop style={{zIndex: 1}} open={this.state.backdropOpen}>
-                        <CircularProgress />
-                    </Backdrop>
+                    <Loading backdropOpen={this.state.backdropOpen}/>
                 </Grid>
                 <RegisterModal 
                 alertMessage={this.state.alertMessage}

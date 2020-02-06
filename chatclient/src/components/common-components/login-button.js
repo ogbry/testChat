@@ -1,5 +1,5 @@
 import React from 'react'
-import './login.css'
+import '../../components/auth/Login/login.css'
 export default function LoginButton(props) {
     return (
         <React.Fragment>

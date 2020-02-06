@@ -2,15 +2,13 @@ import React from 'react'
 import { Dialog, Slide, AppBar, Toolbar, Typography} from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
 import CloseIcon from '@material-ui/icons/Close';
-import Input from './../Login/login-input';
-import RegButton from './../Login/login-button'
+import Input from '../../common-components/login-input';
+import RegButton from '../../common-components/login-button'
 import './register.css'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
-
-
 
 export default function RegisterModal(props) {
     return (
@@ -45,7 +43,7 @@ export default function RegisterModal(props) {
                         </Alert>
                         
                     }
-                    </form>
+                </form>
             </Dialog>
         </div>
     )

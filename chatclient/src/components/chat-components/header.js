@@ -1,8 +1,9 @@
 import React from 'react'
-import { Grid, Avatar, Typography } from '@material-ui/core'
+import { Grid, Avatar, Typography, Menu, MenuItem } from '@material-ui/core'
 import ChatIcon from '@material-ui/icons/Chat';
 import { makeStyles } from '@material-ui/core/styles';
-
+import Loading from '../common-components/loading';
+import {socket} from '../socket/socket.js'
 const useStyles = makeStyles(theme => ({
     text: {
       marginRight: '10px',
@@ -28,7 +29,27 @@ const useStyles = makeStyles(theme => ({
     }
   }));
 
-export default function Header() {
+export default function Header(props) {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [backdropOepn, setbackdropOpen] = React.useState(false);
+    const onLogout = () => {
+        setbackdropOpen(true)
+        setTimeout(() => {
+            setbackdropOpen(false)
+            socket.emit('logout', ({user: localStorage.getItem('username')}))
+            localStorage.clear();
+            props.history.push('/')
+        }, 2000);
+    }
+
+    const handleClick = event => {
+        setAnchorEl(event.currentTarget);
+      };
+    
+      const handleClose = () => {
+        setAnchorEl(null);
+      };
+
     const classes = useStyles();
     return (
         <React.Fragment>
@@ -46,10 +67,21 @@ export default function Header() {
                 style={{display: 'flex'}}
                 >
                     <Grid alignItems="center" justify="flex-end" container>
+                    
                         <Typography className={classes.text}>{localStorage.getItem('username') ? localStorage.getItem('username').toUpperCase() : null}</Typography>
-                        <Avatar alt={localStorage.getItem('username') ? localStorage.getItem('username').toUpperCase() : null} src="/static/images/avatar/2.jpg" style={{marginRight: 10}} />
+                        <Avatar onClick={handleClick} alt={localStorage.getItem('username') ? localStorage.getItem('username').toUpperCase() : null} src="/static/images/avatar/2.jpg" style={{marginRight: 10}} />
+                        <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                    >
+                        <MenuItem onClick={onLogout}>Logout</MenuItem>
+                    </Menu>
                     </Grid>
                 </Grid>
+                <Loading backdropOpen={backdropOepn}/>
             </Grid>
         </React.Fragment>
     )

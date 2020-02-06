@@ -4,7 +4,8 @@ const socketio = require('socket.io')
 const http = require('http')
 require('dotenv').config()
 
-const user = require('./controllers/users.js')
+const users = require('./controllers/users.js')
+const chats = require('./controllers/chat.js')
 
 massive({
     host: process.env.DB_HOST,
@@ -25,16 +26,27 @@ massive({
         console.log('Connected');
 
         socket.on('join', ({id, user}) => {
-            console.log(id, user)
+            console.log(`${user} has joined`)
+        })
+
+        socket.on('logout', ({user}) => {
+            console.log(`${user} has logged out`)
+        })
+
+        socket.on('chat', data =>{
+            io.sockets.emit('chat', data)
         })
 
         socket.on('disconnect', () => {
-            console.log("Disconnected")
+            console.log(`Disconnected`)
         })
     })
 
-    app.post('/api/register', user.register);
-    app.post('/api/login', user.login);
+    app.post('/api/register', users.register);
+    app.post('/api/login', users.login);
+
+    app.post('/api/message/:userid', chats.sendMessage)
+    app.get('/api/getMessages', chats.getMessages)
 
     const PORT = process.env.SERVER_PORT
 
