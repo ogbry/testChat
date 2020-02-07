@@ -15,7 +15,6 @@ function sendMessage(req, res) {
 
 function getMessages(req, res){
     const db = req.app.get('db')
-
     db.query(`SELECT * from chats`)
     .then(data => res.status(201).json(data))
 }
@@ -23,11 +22,8 @@ function getMessages(req, res){
 function deleteOldChats(req, res){
     const db = req.app.get('db');
     const { id } = req.params;
-
-
     db.query(`DELETE from chats where id = ${id}`)
     .then(data => {
-        console.log('object')
         res.status(201).json(data)
     })
 }

@@ -31,6 +31,8 @@ export default function Chatbox(props) {
     const [char, setChar] = useState(50)
     const [chatArray, setChatArray] = useState([])
     const [load, setload] = useState(false)
+    const [typingName, setTypingName] = useState('')
+    
 
     useEffect(() => {
         if(localStorage.getItem('tokenAccess') != null){
@@ -47,17 +49,13 @@ export default function Chatbox(props) {
                 
                 setChatArray([...res.data])
                 socket.on("chat", data => {
+                    setTypingName('')
                     chatArray.push( [{id: undefined, userId: data.userId, name: data.name, content: data.content}] , chatArray);
                     setload(true)
                 });
             })
             setload(false)
-            
       }
-
-    //   socket.on("chat", data => {
-    //     chatArray.push( [{id: undefined, userId: data.userId, name: data.name, content: data.content}] , chatArray);
-    // });
 
     useEffect(() => {
         getChats()
@@ -67,11 +65,30 @@ export default function Chatbox(props) {
         };
       }, [load]);
 
+    useEffect(() => {
+        socket.on('typing', name => {
+            setTypingName(name.name)
+          })
+          socket.on('not typing', val => {
+            setTypingName('')
+          })
+    }, [load])
+
       const textAreaHandler = (e) => {
           let newCount = e.target.maxLength - e.target.value.length
           setChar(newCount)
-          setTextValue(e.target.value)
-          e.target.value.length <= 0 ? setButtonDisabled(true) : setButtonDisabled(false)
+          
+          if(e.target.value.length <= 0){
+            setButtonDisabled(true)
+            setTextValue('')
+            const val = ''
+            socket.emit('not typing', val)
+          }
+          else{
+            setTextValue(e.target.value)
+            setButtonDisabled(false)
+            socket.emit('typing', ({name: localStorage.getItem('username')}))
+          }
       }
 
       const onSend = (e) => {
@@ -79,13 +96,11 @@ export default function Chatbox(props) {
             setTextValue('')
             setChar(50)
             setButtonDisabled(true)
-            
             axios.post(`/api/message/${localStorage.getItem('id')}`, {
                 name: localStorage.getItem('username'),
                 content: textValue
             })
             .then(res => {
-                setload(true)
                 socket.emit('chat', {userId: parseInt(localStorage.getItem('id')), name: res.data.name, content: textValue})
             })
             axios.get(`/api/getMessages`)
@@ -97,23 +112,30 @@ export default function Chatbox(props) {
                     })
                 }
             })
-            setload(false)
             
     }
     const classes = useStyles(); 
-
     return (
         
     <div style={{height: '780px', width: '100%'}}> 
-            <Grid container style={{border: 'solid 1px', borderRadius: '15px', width: '98%', margin: '0 auto'}}
+            <Grid container style={{border: 'solid 1px', borderRadius: '15px', width: '98%', margin: '0 auto', height: '660px'}}
             >
-                <Grid item xl={12} lg={12} md={12} sm={12} xs={12} style={{height: '680px', overflow: 'auto'}}  
+                <Grid item xl={12} lg={12} md={12} sm={12} xs={12} style={{height: '640px', overflow: 'auto'}}  
                 >
-                    {/* <audio src="https://sndup.net/6rfn/eventually.m4r" autoPlay={playThis}/> */}
-                        <MessagesComponent chatArray={chatArray} />
                     
+                    <MessagesComponent chatArray={chatArray} />
                     
                 </Grid>
+                
+                {
+                    typingName.length > 0 ? 
+                    <span style={{marginLeft: 15, fontStyle: 'italic', fontSize: '12px'}}> {typingName} is typing...</span>
+                    
+                    : 
+                    
+                    null
+                }
+
             </Grid>
             <Grid container style={{}}>
                     <Grid item style={{}}

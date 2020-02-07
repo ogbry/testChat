@@ -37,6 +37,15 @@ massive({
             io.sockets.emit('chat', data)
         })
 
+        socket.on('typing', name => {
+            socket.broadcast.emit('typing', name)
+        })
+
+        socket.on('not typing', val => {
+            console.log('trig')
+            socket.broadcast.emit('not typing', val)
+        })
+
         socket.on('disconnect', () => {
             console.log(`Disconnected`)
         })
