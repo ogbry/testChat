@@ -7,9 +7,9 @@ import { Avatar } from 'antd'
 import Zoom from '@material-ui/core/Zoom';
 const useStyles = makeStyles(theme => ({
     text: {
-        textAlign: 'right',
+        textAlign: 'left',
         border: 'solid 2px #999',
-        borderRadius: '20px 20px 0px 20px',
+        borderRadius: '20px 20px 20px 0px',
         fontSize: '19px',
         padding: 10,
         backgroundColor: '#F1F1F1',
@@ -19,8 +19,8 @@ const useStyles = makeStyles(theme => ({
         },
     },
     senderText: {
-        textAlign: 'left',
-        borderRadius: '20px 20px 20px 0px',
+        textAlign: 'right',
+        borderRadius: '20px 20px 0px 20px',
         fontSize: '19px',
         padding: 10,
         backgroundColor: '#1580F4',
@@ -68,8 +68,16 @@ export default function Messages(props) {
                                 item>
                                     
                                     {/* Received */}
-                                    <Grid container alignItems="center" justify="flex-end" style={{padding: 5}}>
-                                        <Grid style={{margin: 15, display: 'flex', justifyContent: 'flex-end'}}
+                                    <Grid container justify="flex-start" alignItems="center" style={{padding: 5}}>
+
+                                        <Grid style={{ display: 'flex', alignItems: 'flex-end'}}
+                                            item>
+                                            <Tooltip TransitionComponent={Zoom} placement="top" arrow title={element.name.toUpperCase()}>
+                                                <Avatar>{trimUser(element.name)}</Avatar>
+                                            </Tooltip>
+                                        </Grid>
+
+                                        <Grid style={{margin: 15, display: 'flex', justifyContent: 'flex-start'}}
                                         xl={5} lg={5} md={6} sm={7} xs={8}
                                         item>
                                             <span className={classes.text}>
@@ -77,20 +85,24 @@ export default function Messages(props) {
                                             </span>
                                         </Grid>
 
-                                        <Grid style={{ height: '80px', display: 'flex', alignItems: 'flex-end'}}
-                                        item>
-                                        <Tooltip TransitionComponent={Zoom} placement="top" arrow title={element.name.toUpperCase()}>
-                                            <Avatar>{trimUser(element.name)}</Avatar>
-                                        </Tooltip>
-                                        </Grid>
+                                        
+                                        
 
                                     </Grid>
                                 </Grid>
                                 :
                                 // Sent
-                                <Grid container alignItems="center" justify="flex-start" style={{padding: 5}}>
+                                <Grid container alignItems="center" justify="flex-end" style={{padding: 5}}>
 
-                                    <Grid style={{margin: 15, display: 'flex', justifyContent: 'flex-start'}}
+                                    <Grid style={{ display: 'flex', justifyContent: 'flex-end'}}
+                                    xl={5} lg={5} md={6} sm={7} xs={8}
+                                    item>
+                                        <span className={classes.senderText}>
+                                            {ReactEmoji.emojify(element.content)}
+                                        </span>
+                                                    
+                                    </Grid>
+                                    <Grid style={{margin: 15, display: 'flex', justifyContent: 'flex-end'}}
 
                                     item>
                                         <Tooltip TransitionComponent={Zoom} placement="top" arrow title={localStorage.getItem('username').toUpperCase()}>
@@ -99,14 +111,7 @@ export default function Messages(props) {
                                     
                                     </Grid>
 
-                                    <Grid style={{ display: 'flex', alignItems: 'flex-end'}}
-                                    xl={5} lg={5} md={6} sm={7} xs={8}
-                                    item>
-                                        <span className={classes.senderText}>
-                                            {ReactEmoji.emojify(element.content)}
-                                        </span>
-                                                    
-                                    </Grid>
+                                    
 
                                 </Grid>
                             }

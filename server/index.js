@@ -25,8 +25,8 @@ massive({
     io.on('connection', (socket) => {
         console.log('Connected');
 
-        socket.on('join', ({id, user}) => {
-            console.log(`${user} has joined`)
+        socket.on('join', data => {
+            console.log(`${data.user} has joined`)
         })
 
         socket.on('logout', ({user}) => {
@@ -42,7 +42,6 @@ massive({
         })
 
         socket.on('not typing', val => {
-            console.log('trig')
             socket.broadcast.emit('not typing', val)
         })
 
