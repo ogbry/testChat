@@ -1,2 +1,2 @@
 import io from 'socket.io-client'
-export const socket = io('172.60.63.52:5001');
+export const socket = io('localhost:5001');

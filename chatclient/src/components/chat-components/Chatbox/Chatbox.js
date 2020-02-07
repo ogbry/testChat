@@ -44,13 +44,23 @@ export default function Chatbox(props) {
       const getChats = () => {
         axios.get(`/api/getMessages`)
             .then(res => {
+                
                 setChatArray([...res.data])
+                socket.on("chat", data => {
+                    chatArray.push( [{id: undefined, userId: data.userId, name: data.name, content: data.content}] , chatArray);
+                    setload(true)
+                });
             })
+            setload(false)
+            
       }
+
+    //   socket.on("chat", data => {
+    //     chatArray.push( [{id: undefined, userId: data.userId, name: data.name, content: data.content}] , chatArray);
+    // });
 
     useEffect(() => {
         getChats()
-        setload(false)
         return () => {
           socket.emit("disconnect");
           socket.off();
@@ -75,10 +85,9 @@ export default function Chatbox(props) {
                 content: textValue
             })
             .then(res => {
-                socket.emit('chat', {userId: parseInt(localStorage.getItem('id')), content: textValue})
-                
+                setload(true)
+                socket.emit('chat', {userId: parseInt(localStorage.getItem('id')), name: res.data.name, content: textValue})
             })
-            .then(() => setload(true))
             axios.get(`/api/getMessages`)
             .then(res => {
                 if(res.data.length > 20){
@@ -88,8 +97,10 @@ export default function Chatbox(props) {
                     })
                 }
             })
+            setload(false)
+            
     }
-      const classes = useStyles(); 
+    const classes = useStyles(); 
 
     return (
         

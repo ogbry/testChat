@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ScrollableFeed from 'react-scrollable-feed'
 import ReactEmoji from 'react-emoji'
 import { Avatar } from 'antd'
+import Zoom from '@material-ui/core/Zoom';
 const useStyles = makeStyles(theme => ({
     text: {
         textAlign: 'right',
@@ -44,6 +45,7 @@ const useStyles = makeStyles(theme => ({
     }
   }));
 
+
 export default function Messages(props) {
     const classes = useStyles();
 
@@ -56,12 +58,15 @@ export default function Messages(props) {
             <ScrollableFeed>
                 {
                     props.chatArray.map((element, index) => 
+                    
                         <div key={index}>
                             {
+                                
                                 parseInt(localStorage.getItem('id')) !== element.userId ? 
                                 <Grid style={{display: 'flex', alignItems: 'center'}}
                                 xl={12} lg={12}
                                 item>
+                                    
                                     {/* Received */}
                                     <Grid container alignItems="center" justify="flex-end" style={{padding: 5}}>
                                         <Grid style={{margin: 15, display: 'flex', justifyContent: 'flex-end'}}
@@ -74,7 +79,7 @@ export default function Messages(props) {
 
                                         <Grid style={{ height: '80px', display: 'flex', alignItems: 'flex-end'}}
                                         item>
-                                        <Tooltip arrow title={element.name.toUpperCase()}>
+                                        <Tooltip TransitionComponent={Zoom} placement="top" arrow title={element.name.toUpperCase()}>
                                             <Avatar>{trimUser(element.name)}</Avatar>
                                         </Tooltip>
                                         </Grid>
@@ -88,7 +93,7 @@ export default function Messages(props) {
                                     <Grid style={{margin: 15, display: 'flex', justifyContent: 'flex-start'}}
 
                                     item>
-                                        <Tooltip arrow title={localStorage.getItem('username').toUpperCase()}>
+                                        <Tooltip TransitionComponent={Zoom} placement="top" arrow title={localStorage.getItem('username').toUpperCase()}>
                                             <Avatar>{trimUser(localStorage.getItem('username'))}</Avatar>
                                         </Tooltip>
                                     
