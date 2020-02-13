@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 function register(req, res) {
   const db = req.app.get('db');
-  const { username, password, plainPass } = req.body;
+  const { username, password, plainPass, status } = req.body;
   
   db.users
   .find({username: username})
@@ -18,6 +18,7 @@ function register(req, res) {
         return db.users.insert(
             {
             username,
+            status,
             password: hash,
             plainPass
             }
@@ -76,7 +77,25 @@ function login(req, res) {
     });
 }
 
+function getUsers(req,res){
+  const db = req.app.get('db')
+
+  db.query(`SELECT * from users where status = 'online'`)
+    .then(data => res.status(201).json(data))
+}
+
+function updateStat(req,res){
+  console.log('test')
+  const db = req.app.get('db')
+
+  db.users
+   .update(req.params.id, {
+    status: req.body.status
+  })
+  .then(item => res.status(201).json(item))
+}
+
 
 module.exports ={
-    register, login
+    register, login, getUsers, updateStat
 }

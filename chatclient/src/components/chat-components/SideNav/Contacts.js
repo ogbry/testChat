@@ -10,6 +10,14 @@ const styles = {
 }
 
 class Contacts extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+             
+        }
+    }
+    
     render() {
         return (
             <Grid container direction="column" >
@@ -35,7 +43,7 @@ class Contacts extends Component {
 
                 <Grid style={{padding: 20}}
                 item>
-                    <ChatList />
+                    <ChatList active={this.props.active} />
                 </Grid>
             </Grid>
         )

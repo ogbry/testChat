@@ -43,10 +43,9 @@ export default function Chatbox(props) {
         }
       }, []);
 
-      const getChats = () => {
+    const getChats = () => {
         axios.get(`/api/getMessages`)
             .then(res => {
-                
                 setChatArray([...res.data])
                 socket.on("chat", data => {
                     setTypingName('')
@@ -55,7 +54,7 @@ export default function Chatbox(props) {
                 });
             })
             setload(false)
-      }
+    }
 
     useEffect(() => {
         getChats()

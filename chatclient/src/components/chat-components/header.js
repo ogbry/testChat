@@ -1,9 +1,11 @@
 import React from 'react'
-import { Grid, Avatar, Typography, Menu, MenuItem } from '@material-ui/core'
+import { Grid, Typography, Menu, MenuItem } from '@material-ui/core'
 import ChatIcon from '@material-ui/icons/Chat';
 import { makeStyles } from '@material-ui/core/styles';
 import Loading from '../common-components/loading';
+import { Avatar } from 'antd'
 import {socket} from '../socket/socket.js'
+import axios from 'axios'
 const useStyles = makeStyles(theme => ({
     text: {
       marginRight: '10px',
@@ -31,15 +33,9 @@ const useStyles = makeStyles(theme => ({
 
 export default function Header(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [backdropOepn, setbackdropOpen] = React.useState(false);
-    const onLogout = () => {
-        setbackdropOpen(true)
-        setTimeout(() => {
-            setbackdropOpen(false)
-            socket.emit('logout', ({user: localStorage.getItem('username')}))
-            localStorage.clear();
-            props.history.push('/')
-        }, 2000);
+    
+    const trimUser = (word) => {
+        return word.charAt(0).toUpperCase()
     }
 
     const handleClick = event => {
@@ -69,7 +65,9 @@ export default function Header(props) {
                     <Grid alignItems="center" justify="flex-end" container>
                     
                         <Typography className={classes.text}>{localStorage.getItem('username') ? localStorage.getItem('username').toUpperCase() : null}</Typography>
-                        <Avatar onClick={handleClick} alt={localStorage.getItem('username') ? localStorage.getItem('username').toUpperCase() : null} src="/static/images/avatar/2.jpg" style={{marginRight: 10}} />
+                        <Avatar onClick={handleClick} style={{marginRight: 10}}>
+                            {localStorage.getItem('username') ? trimUser(localStorage.getItem('username')).toUpperCase() : null}
+                        </Avatar>
                         <Menu
                         id="simple-menu"
                         anchorEl={anchorEl}
@@ -77,11 +75,11 @@ export default function Header(props) {
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={onLogout}>Logout</MenuItem>
+                        <MenuItem onClick={props.onLogout}>Logout</MenuItem>
                     </Menu>
                     </Grid>
                 </Grid>
-                <Loading backdropOpen={backdropOepn}/>
+                <Loading backdropOpen={props.backdropOpen}/>
             </Grid>
         </React.Fragment>
     )

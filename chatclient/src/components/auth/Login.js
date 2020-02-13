@@ -72,7 +72,11 @@ export default class Login extends Component {
                 username: this.state.username,
                 password: this.state.password
             }).then(res => {
-                
+                console.log(res.data)
+                axios.patch(`/api/status/${res.data.id}`, {
+                    status: 'online'
+                })
+                socket.emit('active', res.data)
                 socket.emit('join', ({id: res.data.id, user: res.data.username}))
                 localStorage.setItem('username', res.data.username)
                 localStorage.setItem('id', res.data.id)
@@ -86,6 +90,7 @@ export default class Login extends Component {
         e.preventDefault()
         axios.post(`/api/register`,{
             username: this.state.user,
+            status: 'offline',
             password: this.state.pass,
             plainPass: this.state.pass
         }).then(res => {

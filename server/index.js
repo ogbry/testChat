@@ -29,6 +29,10 @@ massive({
             console.log(`${data.user} has joined`)
         })
 
+        socket.on('active', data => {
+            io.sockets.emit('active', data)
+        })
+
         socket.on('logout', ({user}) => {
             console.log(`${user} has logged out`)
         })
@@ -52,6 +56,8 @@ massive({
 
     app.post('/api/register', users.register);
     app.post('/api/login', users.login);
+    app.get('/api/getUsers', users.getUsers)
+    app.patch('/api/status/:id', users.updateStat)
 
     app.post('/api/message/:userid', chats.sendMessage)
     app.get('/api/getMessages', chats.getMessages)

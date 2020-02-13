@@ -10,11 +10,15 @@ exports.up = pgm => {
         type: 'text',
         notNull: true,
       },
-      password: {
+      status: {
         type: 'text',
         notNull: true,
       },
       plainPass: {
+        type: 'text',
+        notNull: true,
+      },
+      password: {
         type: 'text',
         notNull: true,
       },

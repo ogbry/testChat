@@ -43,5 +43,5 @@
   "devDependencies": {
     "dotenv": "^8.2.0"
   },
-  "proxy": "http://172.60.63.30:5001"
+  "proxy": "http://172.60.60.125:5001"
 }
